@@ -9,6 +9,12 @@
     <!-- yeti bootswatch -->
     <link rel="stylesheet" href="css/bootstrap.min.css">
 
+    <!-- custom style -->
+    <link rel="stylesheet" href="css/main.css">
+
+    <!-- bootstrap toggle -->
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+
     <title>Three.js Playground</title>
 </head>
 
@@ -30,7 +36,30 @@
         </div>
     </div>
 
+    <div class="mx-5" style="padding-top:60px">
+        <div class="w-100 h-100 m-auto">
+            <div class="row">
+                <div class="col-md-12 w-100 text-center">
+                    <h3>HN RENDERING EXAMPLE WITH THREE.JS</h3>
+                    <hr>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-2 mb-1">
+                    <h5 class="text-center" for="structure-toggle-div">Available Structures</h5>
+                    <hr>
+                    <div class="form-group w-100 m-auto" id="structure-toggle-div">
+                    </div>
+                </div>
+                <div class="col-10">
+                    <div class="m-auto" id="c"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- bootstrap -->
+
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
         integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
         crossorigin="anonymous"></script>
@@ -40,12 +69,16 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 
     <!-- threejs -->
-    <script src="js/three.js"></script>
-    <script src="js/loaders/PLYLoader.js"></script>
-    <script src="js/controls/OrbitControls.js"></script>
-    <script src="js/WebGL.js"></script>
+    <script src="js/threejs/three.js"></script>
+    <script src="js/threejs/loaders/PLYLoader.js"></script>
+    <script src="js/threejs/controls/OrbitControls.js"></script>
+    <script src="js/threejs/WebGL.js"></script>
+
+    <!-- data/variables to load -->
+    <script src="data/ply.js"></script>
 
     <!-- my js -->
     <script src="js/main.js"></script>

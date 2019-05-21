@@ -2,19 +2,38 @@ if (WEBGL.isWebGLAvailable() === false) {
     document.body.appendChild(WEBGL.getWebGLErrorMessage());
 }
 let container, camera, cameraTarget, scene, renderer, controls;
+let toggles = document.getElementsByClassName('toggle');
+
+// load toggles
+loadToggles();
+
+Array.from(toggles).forEach((tog) => {
+    console.log(tog);
+});
 
 init();
 animate();
 function init() {
+
+    // get canvas
+    let canvas = document.getElementById('c');
+    // container
     container = document.createElement('div');
-    document.body.appendChild(container);
-    camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 15);
-    // camera.position.set(3, 0.15, 3);
-    camera.position.set(3, 0.15, 3);
-    cameraTarget = new THREE.Vector3(0, - 0.1, 0);
+    container.style.height = '400px';
+    container.classList.add(new Array('container', 'col-6'))
+    // append to canvas
+    canvas.appendChild(container);
+
+    // scene
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x72645b);
     scene.fog = new THREE.Fog(0x72645b, 2, 15);
+    // camera
+    // camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 15);
+    camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 1, 15);
+    // camera.position.set(3, 0.15, 3);
+    camera.position.set(0, 0.15, 3);
+    cameraTarget = new THREE.Vector3(0, - 0.1, 0);
     // Ground
     let plane = new THREE.Mesh(
         new THREE.PlaneBufferGeometry(40, 40),
@@ -36,11 +55,11 @@ function init() {
 
     // PLY files
     let PLYs = [
-        'ply/Parotid_L.ply',
-        'ply/Parotid_R.ply',
-        'ply/PTV54.ply',
-        'ply/PTV60.ply',
-        'ply/PTV70.ply',
+        'data/ply/Parotid_L.ply',
+        'data/ply/Parotid_R.ply',
+        'data/ply/PTV54.ply',
+        'data/ply/PTV60.ply',
+        'data/ply/PTV70.ply',
     ]
     let loader = new THREE.PLYLoader();
     let color;
@@ -74,7 +93,8 @@ function init() {
     // renderer
     renderer = new THREE.WebGLRenderer({ antialias: true });
     renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
     renderer.gammaInput = true;
     renderer.gammaOutput = true;
     renderer.shadowMap.enabled = true;
@@ -102,9 +122,11 @@ function addShadowedLight(x, y, z, color, intensity) {
     directionalLight.shadow.bias = - 0.001;
 }
 function onWindowResize() {
-    camera.aspect = window.innerWidth / window.innerHeight;
+    // camera.aspect = window.innerWidth / window.innerHeight;
+    camera.aspect = container.offsetWidth / container.offsetHeight;
     camera.updateProjectionMatrix();
-    renderer.setSize(window.innerWidth, window.innerHeight);
+    // renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setSize(container.offsetWidth, container.offsetHeight);
 }
 function animate() {
     requestAnimationFrame(animate);
@@ -122,4 +144,42 @@ function render() {
     // camera.position.z = Math.cos(timer) * 1.5;
     camera.lookAt(cameraTarget);
     renderer.render(scene, camera);
+}
+
+function loadToggles() {
+    plyData.sort((a, b) => (a.StructureId > b.StructureId) ? 1 : -1)
+    plyData.forEach(data => {
+
+        createToggle('structure-toggle-div', data.StructureId);
+    });
+}
+
+function createToggle(formDivId, optionLabel) {
+    let toggleDiv = document.createElement("div"),
+        label = document.createElement("label"),
+        labelSpan = document.createElement("span"),
+        input = document.createElement("input"),
+        formDiv = document.getElementById(formDivId);
+
+    toggleDiv.classList.add('checkbox');
+
+    input.setAttribute('checked', 'true');
+    input.setAttribute('type', 'checkbox');
+    input.setAttribute('data-toggle', 'toggle');
+    input.setAttribute('data-style', 'ios');
+    input.setAttribute('data-size', 'small');
+    input.setAttribute('data-onstyle', 'success');
+    input.setAttribute('data-offstyle', 'danger');
+    // border radius set in main.css
+
+    input.id = optionLabel;
+
+    labelSpan.innerHTML = optionLabel;
+    labelSpan.classList.add('ml-2');
+
+    label.appendChild(input);
+    label.appendChild(labelSpan);
+    toggleDiv.appendChild(label);
+
+    formDiv.appendChild(toggleDiv);
 }
