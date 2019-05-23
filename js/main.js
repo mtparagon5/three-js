@@ -51,7 +51,7 @@ function init(toIgnore) {
 
     scene.userData.camera = camera;
 
-
+    // if on server -- requires XMLHttpRequest
     // PLY files
     // let PLYs = [
     //     'data/ply/Parotid_L.ply',
@@ -90,49 +90,71 @@ function init(toIgnore) {
     //     });
     // });
 
-    let loader = new ProcessPLYString();
+    // let loader = new ProcessPLYString();
     let color;
 
+    // plyData.forEach(ply => {
+    //     loader.load(ply.PLYData, function (geometry) {
+    //         if (!toIgnore.includes(ply.StructureId)) {
+    //             if (ply.StructureId.toLowerCase().includes('parotid')) {
+    //                 color = 'pink';
+    //             } else if (ply.StructureId.includes('54')) {
+    //                 color = 'cyan';
+    //             } else if (ply.StructureId.includes('60')) {
+    //                 color = 'blue';
+    //             } else if (ply.StructureId.includes('70')) {
+    //                 color = 'red';
+    //             }
+    //             geometry.computeVertexNormals();
+    //             let material = new THREE.MeshStandardMaterial({
+    //                 color: color,
+    //                 transparent: true,
+    //                 opacity: 0.6,
+    //                 flatShading: false
+    //             });
+    //             let mesh = new THREE.Mesh(geometry, material);
+    //             mesh.position.y = 0;
+    //             mesh.position.z = 0.1;
+    //             mesh.rotation.x = -Math.PI / 2;
+    //             mesh.scale.multiplyScalar(0.005);
+    //             mesh.castShadow = false;
+    //             mesh.receiveShadow = false;
+    //             scene.add(mesh);
+    //         };
+    //     });
+
+    // });
+    let loader = new THREE.PLYLoader();
     plyData.forEach(ply => {
-        // toIgnore.forEach(s => {
-        //     if (s == ply.StructureId) {
-        //         console.log(ply.StructureId + ' should be ignored')
-        //     } else {
+        let geometry = loader.parse(ply.PLYData);
 
-        //     }
-        // });
-        // if (toIgnore.includes(plyData.StructureId)) {} else {
-        loader.load(ply.PLYData, function (geometry) {
-            if (!toIgnore.includes(ply.StructureId)) {
-                if (ply.StructureId.toLowerCase().includes('parotid')) {
-                    color = 'pink';
-                } else if (ply.StructureId.includes('54')) {
-                    color = 'cyan';
-                } else if (ply.StructureId.includes('60')) {
-                    color = 'blue';
-                } else if (ply.StructureId.includes('70')) {
-                    color = 'red';
-                }
-                geometry.computeVertexNormals();
-                let material = new THREE.MeshStandardMaterial({
-                    color: color,
-                    transparent: true,
-                    opacity: 0.6,
-                    flatShading: false
-                });
-                let mesh = new THREE.Mesh(geometry, material);
-                mesh.position.y = 0;
-                mesh.position.z = 0.1;
-                mesh.rotation.x = -Math.PI / 2;
-                mesh.scale.multiplyScalar(0.005);
-                mesh.castShadow = false;
-                mesh.receiveShadow = false;
-                scene.add(mesh);
-            };
-        });
-
+        if (!toIgnore.includes(ply.StructureId)) {
+            if (ply.StructureId.toLowerCase().includes('parotid')) {
+                color = 'pink';
+            } else if (ply.StructureId.includes('54')) {
+                color = 'cyan';
+            } else if (ply.StructureId.includes('60')) {
+                color = 'blue';
+            } else if (ply.StructureId.includes('70')) {
+                color = 'red';
+            }
+            geometry.computeVertexNormals();
+            let material = new THREE.MeshStandardMaterial({
+                color: color,
+                transparent: true,
+                opacity: 0.6,
+                flatShading: false
+            });
+            let mesh = new THREE.Mesh(geometry, material);
+            mesh.position.y = 0;
+            mesh.position.z = 0.1;
+            mesh.rotation.x = -Math.PI / 2;
+            mesh.scale.multiplyScalar(0.005);
+            mesh.castShadow = false;
+            mesh.receiveShadow = false;
+            scene.add(mesh);
+        };
     });
-
 
 
     // Lights

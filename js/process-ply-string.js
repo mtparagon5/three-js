@@ -1,3 +1,8 @@
+// -------- unnecessary -------- //
+// learned it's possible to simply use the PlyLoader.parse()
+// as opposed to the full .load() function.
+
+
 const ProcessPLYString = function () {
 
     // unnecessary for this 
