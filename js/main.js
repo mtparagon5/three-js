@@ -11,6 +11,9 @@ var toDraw = [],
 // load toggles
 loadToggles();
 
+
+
+
 init(toIgnore);
 animate();
 
@@ -22,7 +25,6 @@ function init(toIgnore) {
     // container
     container = document.createElement('div');
     container.style.height = '400px';
-    container.classList.add(new Array('container', 'col-6'))
     // append to canvas
     canvas.appendChild(container);
 
@@ -30,24 +32,24 @@ function init(toIgnore) {
     scene = new THREE.Scene();
     scene.background = new THREE.Color(0x72645b);
     scene.fog = new THREE.Fog(0x72645b, 2, 15);
+
     // camera
-    // camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 15);
     camera = new THREE.PerspectiveCamera(45, container.offsetWidth / container.offsetHeight, 1, 15);
     // camera.position.set(3, 0.15, 3);
     camera.position.set(0, 0.15, 3);
     cameraTarget = new THREE.Vector3(0, -0.1, 0);
-    // Ground
-    let plane = new THREE.Mesh(
-        new THREE.PlaneBufferGeometry(40, 40),
-        new THREE.MeshPhongMaterial({
-            color: 0x999999,
-            specular: 0x101010
-        })
-    );
-    plane.rotation.x = -Math.PI / 2;
-    plane.position.y = -0.5;
-    scene.add(plane);
-    plane.receiveShadow = true;
+    // // Ground
+    // let plane = new THREE.Mesh(
+    //     new THREE.PlaneBufferGeometry(40, 40),
+    //     new THREE.MeshPhongMaterial({
+    //         color: 0x999999,
+    //         specular: 0x101010
+    //     })
+    // );
+    // plane.rotation.x = -Math.PI / 2;
+    // plane.position.y = -0.5;
+    // scene.add(plane);
+    // plane.receiveShadow = true;
 
     scene.userData.camera = camera;
 
@@ -90,41 +92,8 @@ function init(toIgnore) {
     //     });
     // });
 
-    // let loader = new ProcessPLYString();
-    let color;
-
-    // plyData.forEach(ply => {
-    //     loader.load(ply.PLYData, function (geometry) {
-    //         if (!toIgnore.includes(ply.StructureId)) {
-    //             if (ply.StructureId.toLowerCase().includes('parotid')) {
-    //                 color = 'pink';
-    //             } else if (ply.StructureId.includes('54')) {
-    //                 color = 'cyan';
-    //             } else if (ply.StructureId.includes('60')) {
-    //                 color = 'blue';
-    //             } else if (ply.StructureId.includes('70')) {
-    //                 color = 'red';
-    //             }
-    //             geometry.computeVertexNormals();
-    //             let material = new THREE.MeshStandardMaterial({
-    //                 color: color,
-    //                 transparent: true,
-    //                 opacity: 0.6,
-    //                 flatShading: false
-    //             });
-    //             let mesh = new THREE.Mesh(geometry, material);
-    //             mesh.position.y = 0;
-    //             mesh.position.z = 0.1;
-    //             mesh.rotation.x = -Math.PI / 2;
-    //             mesh.scale.multiplyScalar(0.005);
-    //             mesh.castShadow = false;
-    //             mesh.receiveShadow = false;
-    //             scene.add(mesh);
-    //         };
-    //     });
-
-    // });
     let loader = new THREE.PLYLoader();
+    let color;
     plyData.forEach(ply => {
         let geometry = loader.parse(ply.PLYData);
 
@@ -156,7 +125,6 @@ function init(toIgnore) {
         };
     });
 
-
     // Lights
     scene.add(new THREE.HemisphereLight(0x443333, 0x111122));
     addShadowedLight(1, 1, 1, 0xffffff, 1.35);
@@ -175,17 +143,13 @@ function init(toIgnore) {
     container.appendChild(renderer.domElement);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.minDistance = 2;
+    controls.minDistance = 1;
     controls.maxDistance = 5;
     controls.enablePan = true;
     controls.enableZoom = true;
     controls.autoRotate = true;
     // scene.userData.controls = controls;
 
-
-    // // stats
-    // stats = new Stats();
-    // container.appendChild(stats.dom);
     // resize
     window.addEventListener('resize', onWindowResize, false);
 }
@@ -222,10 +186,10 @@ function animate() {
 }
 
 function render() {
-    let timer = Date.now() * 0.0005;
-    scene.children.forEach(child => {
-        child.rotation.z = timer;
-    })
+    // let timer = Date.now() * 0.0005;
+    // scene.children.forEach(child => {
+    //     child.rotation.z = timer;
+    // })
     // // if you wanted to just go back and forth anteriorly
     // camera.position.x = Math.sin(timer) * 1.5;
     // camera.position.x = Math.sin(timer) * 1.5;
